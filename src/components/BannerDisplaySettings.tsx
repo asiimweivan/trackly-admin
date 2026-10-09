@@ -6,15 +6,18 @@ const NAVY = "#1B2A5A"; const TEAL = "#1DAA8A"; const GRAY = "#9CA3AF";
 
 const STYLES: { key: string; name: string; desc: string }[] = [
   { key: "fade",    name: "Fade",    desc: "Soft cross-fade with a gentle zoom" },
+  { key: "dissolve", name: "Dissolve", desc: "Slow, clean dissolve: next banner melts in over the old one" },
   { key: "slide",   name: "Slide",   desc: "Glides sideways, one replaces the next" },
   { key: "zoom",    name: "Zoom",    desc: "Pulls forward and dissolves into the next" },
   { key: "flip",    name: "Flip",    desc: "3D card flip to the next banner" },
   { key: "rise",    name: "Rise",    desc: "Floats up and fades, next rises in" },
   { key: "shuffle", name: "Shuffle", desc: "Mixes all styles so it never gets boring" },
 ];
-const REAL = ["fade", "slide", "zoom", "flip", "rise"];
+const REAL = ["fade", "dissolve", "slide", "zoom", "flip", "rise"];
 
 const CSS = [
+  "@keyframes bd-in-dissolve{from{opacity:0}to{opacity:1}}",
+  "@keyframes bd-out-dissolve{from{opacity:1}99%{opacity:1}to{opacity:0}}",
   "@keyframes bd-in-fade{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}",
   "@keyframes bd-out-fade{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.04)}}",
   "@keyframes bd-in-slide{from{opacity:0;transform:translateX(45%)}60%{opacity:1}to{opacity:1;transform:translateX(0)}}",
@@ -146,8 +149,8 @@ export default function BannerDisplaySettings({ slides }: { slides: any[] }) {
             <Play size={11} color={TEAL} /> LIVE PREVIEW ({list === SAMPLES ? "sample banners" : "your active banners"})
           </div>
           <div style={{ position: "relative", height: 130, borderRadius: 14, overflow: "hidden", background: "#F3F4F6" }}>
-            {prevAd && <Slide key={"o" + tick} a={prevAd} anim={"bd-out-" + pStyle + " 750ms cubic-bezier(.4,0,.2,1) forwards"} />}
-            <Slide key={"i" + tick} a={curAd} anim={tick === 0 ? "none" : "bd-in-" + pStyle + " 750ms cubic-bezier(.4,0,.2,1) forwards"} />
+            {prevAd && <Slide key={"o" + tick} a={prevAd} anim={"bd-out-" + pStyle + " " + (pStyle === "dissolve" ? 1100 : 750) + "ms cubic-bezier(.4,0,.2,1) forwards"} />}
+            <Slide key={"i" + tick} a={curAd} anim={tick === 0 ? "none" : "bd-in-" + pStyle + " " + (pStyle === "dissolve" ? 1100 : 750) + "ms cubic-bezier(.4,0,.2,1) forwards"} />
           </div>
           <div style={{ fontSize: 11, color: GRAY, marginTop: 8 }}>
             Style: <b style={{ color: NAVY }}>{style}</b> &middot; each banner stays {seconds}s
