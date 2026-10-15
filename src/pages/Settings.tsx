@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Settings as SettingsIcon, Shield, CheckCircle2, Clock, Save } from "lucide-react";
 import { adminApi } from "../api/admin";
+import { planLabel } from "../utils/plans";
 
 const NAVY = "#1B2A5A"; const TEAL = "#1DAA8A"; const GOLD = "#D4860A"; const GRAY = "#9CA3AF";
 
@@ -97,7 +98,7 @@ export default function Settings() {
           const color = PLAN_COLORS[p.key] || NAVY;
           return (
             <div key={p.key} style={{ background: "#fff", borderRadius: 14, padding: 24, boxShadow: "0 2px 8px rgba(0,0,0,0.05)", borderTop: `4px solid ${color}` }}>
-              <h3 style={{ fontSize: 16, fontWeight: 900, color: NAVY, margin: "0 0 4px" }}>{p.name}</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 900, color: NAVY, margin: "0 0 4px" }}>{planLabel(p.key)}</h3>
               <p style={{ fontSize: 11, color: GRAY, margin: "0 0 18px" }}>Plan key: {p.key}</p>
 
               <label style={{ fontSize: 11, fontWeight: 700, color: "#374151", display: "block", marginBottom: 4 }}>MONTHLY PRICE (RWF)</label>
@@ -129,9 +130,9 @@ export default function Settings() {
                 style={{ width: "100%", padding: "8px 12px", border: "1.5px solid #E5E7EB", borderRadius: 8, fontSize: 13, marginBottom: 18, outline: "none", boxSizing: "border-box" }} />
               <p style={{ fontSize: 11, color: GRAY, margin: "-12px 0 16px" }}>Percentage of monthly price paid to the referring agent, capped at the client's first 6 months.</p>
 
-              <button onClick={() => savePlan(p.key, p.name)} disabled={savingKey === p.key}
+              <button onClick={() => savePlan(p.key, planLabel(p.key))} disabled={savingKey === p.key}
                 style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: 12, background: color, color: "#fff", border: "none", borderRadius: 10, fontWeight: 800, fontSize: 13, cursor: "pointer", opacity: savingKey === p.key ? 0.6 : 1 }}>
-                <Save size={15} /> {savingKey === p.key ? "Saving..." : `Save ${p.name}`}
+                <Save size={15} /> {savingKey === p.key ? "Saving..." : `Save ${planLabel(p.key)}`}
               </button>
             </div>
           );
