@@ -17,7 +17,7 @@ export default function Analytics() {
   const planData = stats ? [
     { name: "Ibanze", value: stats.ibanzePlanCount, color: TEAL },
     { name: "Iterambere", value: stats.iteramberePlanCount, color: NAVY },
-    { name: "Inkunga PRO", value: stats.inkungaPlanCount, color: GOLD },
+    { name: "Agaciro", value: stats.inkungaPlanCount, color: GOLD },
   ] : [];
 
   const totalSubs = stats ? (stats.activeSubscriptions + stats.trialCount + stats.expiredCount) : 0;
@@ -43,9 +43,9 @@ export default function Analytics() {
     }));
 
   const cards = [
-    { label: "MRR", value: `${(stats?.totalRevenueThisMonth || 0).toLocaleString()} RWF`, icon: <Wallet size={20} color={TEAL} />, color: TEAL },
-    { label: "ARR (projected)", value: `${((stats?.totalRevenueThisMonth || 0) * 12).toLocaleString()} RWF`, icon: <Calendar size={20} color={NAVY} />, color: NAVY },
-    { label: "Avg Revenue / Business", value: `${avgRevenuePerBusiness.toLocaleString()} RWF`, icon: <Store size={20} color={GOLD} />, color: GOLD },
+    { label: "MRR", value: `${(stats?.totalRevenueAllTime || 0).toLocaleString()} RWF`, icon: <Wallet size={20} color={TEAL} />, color: TEAL },
+    { label: "ARR (projected)", value: `${((stats?.totalRevenueAllTime || 0) * 12).toLocaleString()} RWF`, icon: <Calendar size={20} color={NAVY} />, color: NAVY },
+    { label: "Avg MRR / Business", value: `${avgRevenuePerBusiness.toLocaleString()} RWF`, icon: <Store size={20} color={GOLD} />, color: GOLD },
     { label: "Churn Rate", value: `${churnRate}%`, icon: <TrendingDown size={20} color={RED} />, color: RED },
   ];
 

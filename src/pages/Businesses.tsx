@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { planLabel } from "../utils/plans";
 import { Store, Search, BadgeCheck, Info } from "lucide-react";
 import { adminApi } from "../api/admin";
 
@@ -92,7 +93,7 @@ export default function Businesses() {
                   <td style={{ padding: "14px 16px", fontSize: 12, color: "#6B7280" }}>{b.district}, {b.province}</td>
                   <td style={{ padding: "14px 16px" }}>
                     <span style={{ background: PLAN_COLORS[b.planKey] + "20", color: PLAN_COLORS[b.planKey], padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                      {b.planKey?.toUpperCase()}
+                      {planLabel(b.planKey).toUpperCase()}
                     </span>
                   </td>
                   <td style={{ padding: "14px 16px" }}>

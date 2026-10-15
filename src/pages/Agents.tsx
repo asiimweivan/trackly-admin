@@ -266,9 +266,12 @@ export default function Agents() {
                     return (
                       <tr key={a.id} style={{ borderTop: "1px solid #F3F4F6", background: i % 2 === 0 ? "#fff" : "#FAFAFA" }}>
                         <td style={{ padding: "14px 16px" }}>
-                          <button onClick={() => setDetail(a)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}>
+                          <button onClick={() => setDetail(a)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left", display: "flex", alignItems: "center", gap: 10 }}>
+                            {a.photoUrl ? (<img src={a.photoUrl} alt="" style={{ width: 34, height: 34, borderRadius: "50%", objectFit: "cover", border: "1px solid #E5E7EB" }} />) : (<div style={{ width: 34, height: 34, borderRadius: "50%", background: "#EEF1F8", color: NAVY, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13 }}>{(a.fullName || "?").charAt(0).toUpperCase()}</div>)}
+                            <div>
                             <div style={{ fontWeight: 700, color: NAVY, fontSize: 13 }}>{a.fullName}</div>
                             <div style={{ fontSize: 11, color: GRAY }}>{a.agentCode || "No code yet"}</div>
+                          </div>
                           </button>
                         </td>
                         <td style={{ padding: "14px 16px", fontSize: 12, color: "#6B7280" }}>{a.phone}</td>
@@ -438,8 +441,25 @@ export default function Agents() {
               </div>
               <button onClick={() => setDetail(null)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: GRAY }}>&times;</button>
             </div>
+            {detail.photoUrl ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 18, padding: 12, background: "#F9FAFB", borderRadius: 12 }}>
+                <a href={detail.photoUrl} target="_blank" rel="noreferrer" title="Open full size">
+                  <img src={detail.photoUrl} alt={detail.fullName} style={{ width: 96, height: 120, objectFit: "cover", borderRadius: 10, border: "2px solid " + GOLD, background: "#fff", display: "block" }} />
+                </a>
+                <div style={{ fontSize: 12, color: GRAY, lineHeight: 1.6 }}>
+                  <div style={{ color: NAVY, fontWeight: 800, fontSize: 13 }}>Passport photo</div>
+                  Check: white background, face clear, no hat or glasses glare.
+                  <div><a href={detail.photoUrl} target="_blank" rel="noreferrer" style={{ color: TEAL, fontWeight: 700 }}>Open full size</a></div>
+                </div>
+              </div>
+            ) : (
+              <div style={{ marginBottom: 18, padding: 12, background: "#FFFBEB", color: "#D97706", borderRadius: 12, fontSize: 12, fontWeight: 700 }}>
+                No passport photo on this application (submitted before photos were required).
+              </div>
+            )}
             {[
               ["Phone", detail.phone],
+              ["Email", detail.email || "Not provided"],
               ["National ID", detail.nationalId || "Not provided"],
               ["Location", [detail.cell, detail.sector, detail.district, detail.province].filter(Boolean).join(", ") || "-"],
               ["Contact Range", detail.contactRange || "-"],

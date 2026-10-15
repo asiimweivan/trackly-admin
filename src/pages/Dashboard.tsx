@@ -87,7 +87,7 @@ export default function Dashboard() {
         <StatCard icon={<Store size={22} color={TEAL} />} label="TOTAL BUSINESSES" value={stats.totalBusinesses} sub={`+${stats.newBusinessesToday} today`} color={TEAL} />
         <StatCard icon={<CreditCard size={22} color={NAVY} />} label="ACTIVE SUBSCRIPTIONS" value={stats.activeSubscriptions} sub={`${stats.trialCount} on trial`} color={NAVY} />
         <StatCard icon={<Users size={22} color={GOLD} />} label="TOTAL USERS" value={stats.totalUsers} sub={`${stats.totalAgents} agents`} color={GOLD} />
-        <StatCard icon={<Wallet size={22} color={PURPLE} />} label="REVENUE THIS MONTH" value={`${stats.totalRevenueThisMonth.toLocaleString()} RWF`} sub={`All time: ${stats.totalRevenueAllTime.toLocaleString()} RWF`} color={PURPLE} />
+        <StatCard icon={<Wallet size={22} color={PURPLE} />} label="REVENUE THIS MONTH" value={`${stats.totalRevenueThisMonth.toLocaleString()} RWF`} sub={`Active plans: ${stats.totalRevenueAllTime.toLocaleString()} RWF / month`} color={PURPLE} />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
@@ -95,9 +95,9 @@ export default function Dashboard() {
           <h2 style={{ fontSize: 16, fontWeight: 800, color: NAVY, margin: "0 0 20px", display: "flex", alignItems: "center", gap: 8 }}>
             <BarChart3 size={18} color={NAVY} /> Subscription Plans
           </h2>
-          <PlanBar label="Ibanze (1,000 RWF/mo)" count={stats.ibanzePlanCount} total={totalPlans} color={TEAL} />
-          <PlanBar label="Iterambere (5,000 RWF/mo)" count={stats.iteramberePlanCount} total={totalPlans} color={NAVY} />
-          <PlanBar label="Inkunga PRO (10,000 RWF/mo)" count={stats.inkungaPlanCount} total={totalPlans} color={GOLD} />
+          <PlanBar label="Ibanze (2,000 RWF/mo)" count={stats.ibanzePlanCount} total={totalPlans} color={TEAL} />
+          <PlanBar label="Iterambere (6,000 RWF/mo)" count={stats.iteramberePlanCount} total={totalPlans} color={NAVY} />
+          <PlanBar label="Agaciro (10,000 RWF/mo)" count={stats.inkungaPlanCount} total={totalPlans} color={GOLD} />
           <div style={{ marginTop: 20, padding: 16, background: "#F9FAFB", borderRadius: 10 }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ fontSize: 13, color: "#6B7280" }}>Expired / Past Due</span>

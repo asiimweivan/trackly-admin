@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { planLabel } from "../utils/plans";
 import { Wallet, CheckCircle2, Hourglass } from "lucide-react";
 import { adminApi } from "../api/admin";
 
@@ -63,7 +64,7 @@ export default function Payments() {
                 <tr key={s.businessId} style={{ borderTop: "1px solid #F3F4F6", background: i % 2 === 0 ? "#fff" : "#FAFAFA" }}>
                   <td style={{ padding: "12px 16px", fontWeight: 700, color: NAVY, fontSize: 13 }}>{s.businessName}</td>
                   <td style={{ padding: "12px 16px" }}>
-                    <span style={{ background: "#EFF6FF", color: NAVY, padding: "3px 8px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>{s.planKey?.toUpperCase()}</span>
+                    <span style={{ background: "#EFF6FF", color: NAVY, padding: "3px 8px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>{planLabel(s.planKey).toUpperCase()}</span>
                   </td>
                   <td style={{ padding: "12px 16px", fontWeight: 700, color: TEAL, fontSize: 13 }}>{s.priceRwf?.toLocaleString()} RWF</td>
                   <td style={{ padding: "12px 16px" }}>

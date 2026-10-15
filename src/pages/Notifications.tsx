@@ -69,7 +69,7 @@ export default function Notifications() {
                   <option value="">-- Select Plan --</option>
                   <option value="ibanze">Ibanze</option>
                   <option value="iterambere">Iterambere</option>
-                  <option value="inkunga">Inkunga PRO</option>
+                  <option value="inkunga">Agaciro</option>
                 </select>
               </>
             )}

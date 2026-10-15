@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { planLabel } from "../utils/plans";
 import { adminApi } from "../api/admin";
 
 const NAVY = "#1B2A5A"; const TEAL = "#1DAA8A"; const GOLD = "#D4860A"; const GRAY = "#9CA3AF";
@@ -89,7 +90,7 @@ export default function Subscriptions() {
                     <td style={{ padding: "14px 16px", fontSize: 12, color: "#6B7280" }}>{s.ownerPhone}</td>
                     <td style={{ padding: "14px 16px" }}>
                       <span style={{ background: hasPlan ? "#EFF6FF" : "#F3F4F6", color: hasPlan ? NAVY : GRAY, padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                        {hasPlan ? s.planKey.toUpperCase() : "NO PLAN"}
+                        {hasPlan ? planLabel(s.planKey).toUpperCase() : "NO PLAN"}
                       </span>
                     </td>
                     <td style={{ padding: "14px 16px" }}>
@@ -133,7 +134,7 @@ export default function Subscriptions() {
               style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #E5E7EB", borderRadius: 10, fontSize: 14, marginBottom: 16, outline: "none" }}>
               {plans.map(p => (
                 <option key={p.key} value={p.key}>
-                  {p.name} - {p.priceMonthly.toLocaleString()} RWF/mo
+                  {planLabel(p.key)} - {p.priceMonthly.toLocaleString()} RWF/mo
                 </option>
               ))}
             </select>

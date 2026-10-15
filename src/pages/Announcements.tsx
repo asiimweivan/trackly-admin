@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { planLabel } from "../utils/plans";
 import { Megaphone, Image as ImageIcon, Plus } from "lucide-react";
 import client from "../api/client";
 import BannerDisplaySettings from "../components/BannerDisplaySettings";
@@ -221,7 +222,7 @@ export default function Announcements() {
                 <label style={{ fontSize: 11, fontWeight: 700, color: "#374151", display: "block", marginBottom: 4 }}>TARGET PLAN</label>
                 <select value={form.targetPlan} onChange={e => setForm({ ...form, targetPlan: e.target.value })}
                   style={{ width: "100%", padding: "8px 12px", border: "1.5px solid #E5E7EB", borderRadius: 8, fontSize: 13, outline: "none" }}>
-                  {PLANS.map(p => <option key={p} value={p}>{p.toUpperCase()}</option>)}
+                  {PLANS.map(p => <option key={p} value={p}>{p === "all" ? "ALL" : planLabel(p).toUpperCase()}</option>)}
                 </select>
               </div>
             </div>
