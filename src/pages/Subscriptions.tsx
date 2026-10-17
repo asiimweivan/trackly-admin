@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { planLabel } from "../utils/plans";
+import { planLabel, effectivePlan } from "../utils/plans";
 import { adminApi } from "../api/admin";
 
 const NAVY = "#1B2A5A"; const TEAL = "#1DAA8A"; const GOLD = "#D4860A"; const GRAY = "#9CA3AF";
@@ -39,8 +39,14 @@ export default function Subscriptions() {
   const activate = async () => {
     setSaving(true);
     try {
-      await adminApi.activateSubscription({ businessId: modal.businessId, planKey: form.planKey, billingCycle: form.billingCycle });
-      setMsg(`Subscription updated for ${modal.businessName}.`);
+      // MOVE_TO_UBUNTU: Ubuntu is the free plan, so moving there ends the paid subscription
+      if (form.planKey === "ubuntu") {
+        if (modal.planKey !== "none" && modal.status !== "cancelled") await adminApi.cancelSubscription(modal.businessId);
+        setMsg(`${modal.businessName} moved to the free Ubuntu plan.`);
+      } else {
+        await adminApi.activateSubscription({ businessId: modal.businessId, planKey: form.planKey, billingCycle: form.billingCycle });
+        setMsg(`Subscription updated for ${modal.businessName}.`);
+      }
       setModal(null);
       load();
     } catch { setMsg("Failed to update subscription."); }
@@ -48,10 +54,10 @@ export default function Subscriptions() {
   };
 
   const cancel = async (businessId: string, businessName: string) => {
-    if (!window.confirm(`Cancel the subscription for ${businessName}?`)) return;
+    if (!window.confirm(`Move ${businessName} to the free Ubuntu plan? Their paid plan ends now.`)) return;
     try {
       await adminApi.cancelSubscription(businessId);
-      setMsg(`Subscription cancelled for ${businessName}.`);
+      setMsg(`${businessName} moved to the free Ubuntu plan.`);
       load();
     } catch { setMsg("Failed to cancel subscription."); }
   };
@@ -83,14 +89,14 @@ export default function Subscriptions() {
             </thead>
             <tbody>
               {data.map((s, i) => {
-                const hasPlan = s.planKey !== "none";
+                const hasPlan = effectivePlan(s.planKey, s.status) !== "ubuntu";
                 return (
                   <tr key={s.businessId} style={{ borderTop: "1px solid #F3F4F6", background: i % 2 === 0 ? "#fff" : "#FAFAFA" }}>
                     <td style={{ padding: "14px 16px", fontWeight: 700, color: NAVY, fontSize: 13 }}>{s.businessName}</td>
                     <td style={{ padding: "14px 16px", fontSize: 12, color: "#6B7280" }}>{s.ownerPhone}</td>
                     <td style={{ padding: "14px 16px" }}>
                       <span style={{ background: hasPlan ? "#EFF6FF" : "#F3F4F6", color: hasPlan ? NAVY : GRAY, padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                        {hasPlan ? planLabel(s.planKey).toUpperCase() : "NO PLAN"}
+                        {hasPlan ? planLabel(s.planKey).toUpperCase() : "UBUNTU (FREE)"}
                       </span>
                     </td>
                     <td style={{ padding: "14px 16px" }}>
@@ -111,7 +117,7 @@ export default function Subscriptions() {
                           {hasPlan ? "Change Plan" : "Set Plan"}
                         </button>
                         {hasPlan && (
-                          <button onClick={() => cancel(s.businessId, s.businessName)} style={{ background: "#FEF2F2", color: "#EF4444", border: "1px solid #FECACA", borderRadius: 8, padding: "6px 12px", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>Cancel</button>
+                          <button onClick={() => cancel(s.businessId, s.businessName)} style={{ background: "#FEF2F2", color: "#EF4444", border: "1px solid #FECACA", borderRadius: 8, padding: "6px 12px", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>Move to Ubuntu</button>
                         )}
                       </div>
                     </td>
@@ -132,6 +138,7 @@ export default function Subscriptions() {
             <label style={{ fontSize: 12, fontWeight: 700, color: "#374151", display: "block", marginBottom: 6 }}>PLAN</label>
             <select value={form.planKey} onChange={e => setForm({ ...form, planKey: e.target.value })}
               style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #E5E7EB", borderRadius: 10, fontSize: 14, marginBottom: 16, outline: "none" }}>
+              {!plans.some((p: any) => p.key === "ubuntu") && <option value="ubuntu">Ubuntu (Free) - move to the free plan</option>}
               {plans.map(p => (
                 <option key={p.key} value={p.key}>
                   {planLabel(p.key)} - {p.priceMonthly.toLocaleString()} RWF/mo

@@ -64,6 +64,21 @@ export default function Agents() {
 
   const [busyId, setBusyId]   = useState<string | null>(null);
   const [msg, setMsg]         = useState("");
+  const [windows, setWindows] = useState<Record<string, number | null>>({});
+  const loadWindows = () => { adminApi.getCommissionWindows().then((r: any) => setWindows(r.data || {})).catch(() => {}); };
+  useEffect(() => { loadWindows(); }, []);
+  const editWindow = async (a: any) => {
+    const cur = windows[a.id];
+    const v = window.prompt("Commission window for " + a.fullName + ": how many months of commission per business? (default 6, maximum 36)", String(cur ?? 6));
+    if (v === null) return;
+    const n = parseInt(v, 10);
+    if (!n || n < 1 || n > 36) { setMsg("Enter a whole number from 1 to 36."); return; }
+    try {
+      await adminApi.setCommissionWindow(a.id, n);
+      setMsg(a.fullName + ": commission window set to " + n + " months.");
+      loadWindows();
+    } catch (e: any) { setMsg(errMsg(e, "Failed to update the commission window.")); }
+  };
 
   const load = () => {
     setLoading(true);
@@ -255,7 +270,7 @@ export default function Agents() {
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr style={{ background: "#F9FAFB" }}>
-                    {["Agent", "Phone", "Location", "Status", "Active Subs", "Total Paid", "Applied", "Actions"].map(h => (
+                    {["Agent", "Phone", "Location", "Status", "Active Subs", "Total Paid", "Window", "Applied", "Actions"].map(h => (
                       <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#6B7280", letterSpacing: 0.5 }}>{h.toUpperCase()}</th>
                     ))}
                   </tr>
@@ -283,6 +298,12 @@ export default function Agents() {
                         </td>
                         <td style={{ padding: "14px 16px", fontSize: 13, fontWeight: 700, color: TEAL }}>{a.activeSubscribers ?? 0}</td>
                         <td style={{ padding: "14px 16px", fontSize: 13, fontWeight: 700, color: NAVY }}>{(a.totalEarnedRwf ?? 0).toLocaleString()} RWF</td>
+                        <td style={{ padding: "14px 16px", fontSize: 12, fontWeight: 700, color: NAVY, whiteSpace: "nowrap" }}>
+                          {windows[a.id] ?? 6} mo
+                          {a.status === "approved" && (
+                            <button onClick={() => editWindow(a)} style={{ marginLeft: 8, background: "#fff", color: TEAL, border: `1px solid ${TEAL}`, borderRadius: 8, padding: "3px 8px", fontSize: 10, fontWeight: 700, cursor: "pointer" }}>Edit</button>
+                          )}
+                        </td>
                         <td style={{ padding: "14px 16px", fontSize: 12, color: GRAY }}>{a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "-"}</td>
                         <td style={{ padding: "14px 16px" }}>
                           {a.status === "pending_review" && (

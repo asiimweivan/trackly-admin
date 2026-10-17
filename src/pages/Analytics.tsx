@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TrendingUp, Wallet, Calendar, Store, TrendingDown } from "lucide-react";
 import { adminApi } from "../api/admin";
+import { effectivePlan } from "../utils/plans";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 const NAVY = "#1B2A5A"; const TEAL = "#1DAA8A"; const GOLD = "#D4860A"; const GRAY = "#9CA3AF"; const RED = "#EF4444";
@@ -14,10 +15,12 @@ export default function Analytics() {
     adminApi.getBusinesses().then(r => setBusinesses(r.data));
   }, []);
 
+  const effCount = (k: string) => businesses.filter((b: any) => effectivePlan(b.planKey, b.subscriptionStatus) === k).length;
   const planData = stats ? [
-    { name: "Ibanze", value: stats.ibanzePlanCount, color: TEAL },
-    { name: "Iterambere", value: stats.iteramberePlanCount, color: NAVY },
-    { name: "Agaciro", value: stats.inkungaPlanCount, color: GOLD },
+    { name: "Ubuntu (Free)", value: effCount("ubuntu"), color: "#94A3B8" },
+    { name: "Ibanze", value: effCount("ibanze"), color: TEAL },
+    { name: "Iterambere", value: effCount("iterambere"), color: NAVY },
+    { name: "Agaciro", value: effCount("inkunga"), color: GOLD },
   ] : [];
 
   const totalSubs = stats ? (stats.activeSubscriptions + stats.trialCount + stats.expiredCount) : 0;
@@ -28,6 +31,8 @@ export default function Analytics() {
   ] : [];
 
   const churnRate = totalSubs > 0 && stats ? ((stats.expiredCount / totalSubs) * 100).toFixed(1) : "0.0";
+  const paidBusinesses = businesses.filter((b: any) => effectivePlan(b.planKey, b.subscriptionStatus) !== "ubuntu").length;
+  const conversionRate = businesses.length > 0 ? ((paidBusinesses / businesses.length) * 100).toFixed(1) : "0.0";
   const avgRevenuePerBusiness = businesses.length > 0 && stats
     ? Math.round((stats.totalRevenueAllTime || 0) / businesses.length)
     : 0;
@@ -47,6 +52,7 @@ export default function Analytics() {
     { label: "ARR (projected)", value: `${((stats?.totalRevenueAllTime || 0) * 12).toLocaleString()} RWF`, icon: <Calendar size={20} color={NAVY} />, color: NAVY },
     { label: "Avg MRR / Business", value: `${avgRevenuePerBusiness.toLocaleString()} RWF`, icon: <Store size={20} color={GOLD} />, color: GOLD },
     { label: "Churn Rate", value: `${churnRate}%`, icon: <TrendingDown size={20} color={RED} />, color: RED },
+    { label: "Free to Paid", value: `${conversionRate}%`, icon: <TrendingUp size={20} color={TEAL} />, color: "#059669" },
   ];
 
   return (
@@ -58,7 +64,7 @@ export default function Analytics() {
         <p style={{ color: GRAY, margin: "4px 0 0", fontSize: 13 }}>Platform performance overview</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 16, marginBottom: 24 }}>
         {cards.map(c => (
           <div key={c.label} style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.05)", borderTop: `3px solid ${c.color}` }}>
             <div style={{ width: 36, height: 36, borderRadius: 9, background: c.color + "15", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>{c.icon}</div>

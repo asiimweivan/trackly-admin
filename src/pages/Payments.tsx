@@ -16,12 +16,12 @@ export default function Payments() {
   const paid = subscriptions.filter(s => s.planKey !== "none");
   const totalRevenue = paid.filter(s => s.status === "active").reduce((sum, s) => sum + (s.priceRwf || 0), 0);
   const activeCount = paid.filter(s => s.status === "active").length;
-  const trialCount = paid.filter(s => s.status === "trialing").length;
+  const trialCount = paid.filter(s => s.status === "past_due").length;
 
   const cards = [
     { label: "Total MRR", value: `${totalRevenue.toLocaleString()} RWF`, icon: <Wallet size={22} color={TEAL} />, color: TEAL },
     { label: "Active Paying", value: activeCount, icon: <CheckCircle2 size={22} color={NAVY} />, color: NAVY },
-    { label: "On Trial", value: trialCount, icon: <Hourglass size={22} color={GOLD} />, color: GOLD },
+    { label: "Past Due", value: trialCount, icon: <Hourglass size={22} color={GOLD} />, color: GOLD },
   ];
 
   return (

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { planLabel } from "../utils/plans";
+import { planLabel, effectivePlan } from "../utils/plans";
 import { Store, Search, BadgeCheck, Info } from "lucide-react";
 import { adminApi } from "../api/admin";
 
 const NAVY = "#1B2A5A"; const TEAL = "#1DAA8A"; const GOLD = "#D4860A"; const GRAY = "#9CA3AF";
 const BLUE = "#1D9BF0";
 
-const PLAN_COLORS: any = { ibanze: TEAL, iterambere: NAVY, inkunga: GOLD, none: GRAY };
+const PLAN_COLORS: any = { ubuntu: "#94A3B8", ibanze: TEAL, iterambere: NAVY, inkunga: GOLD, none: GRAY };
 
 export default function Businesses() {
   const [data, setData] = useState<any[]>([]);
@@ -92,17 +92,17 @@ export default function Businesses() {
                   </td>
                   <td style={{ padding: "14px 16px", fontSize: 12, color: "#6B7280" }}>{b.district}, {b.province}</td>
                   <td style={{ padding: "14px 16px" }}>
-                    <span style={{ background: PLAN_COLORS[b.planKey] + "20", color: PLAN_COLORS[b.planKey], padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                      {planLabel(b.planKey).toUpperCase()}
+                    <span style={{ background: PLAN_COLORS[effectivePlan(b.planKey, b.subscriptionStatus)] + "20", color: PLAN_COLORS[effectivePlan(b.planKey, b.subscriptionStatus)], padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
+                      {planLabel(effectivePlan(b.planKey, b.subscriptionStatus)).toUpperCase()}
                     </span>
                   </td>
                   <td style={{ padding: "14px 16px" }}>
                     <span style={{ background: b.subscriptionStatus === "active" ? "#ECFDF5" : b.subscriptionStatus === "none" ? "#F3F4F6" : "#FEF2F2", color: b.subscriptionStatus === "active" ? "#059669" : b.subscriptionStatus === "none" ? GRAY : "#EF4444", padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                      {b.subscriptionStatus}
+                      {b.subscriptionStatus === "none" ? "free" : b.subscriptionStatus}
                     </span>
                   </td>
                   <td style={{ padding: "14px 16px", fontSize: 12, color: b.daysRemaining <= 3 && b.daysRemaining > 0 ? "#EF4444" : "#374151", fontWeight: b.daysRemaining <= 3 && b.daysRemaining > 0 ? 700 : 400 }}>
-                    {b.planKey !== "none" ? `${b.daysRemaining}d` : "-"}
+                    {effectivePlan(b.planKey, b.subscriptionStatus) !== "ubuntu" ? `${b.daysRemaining}d` : "-"}
                   </td>
                   <td style={{ padding: "14px 16px", fontSize: 13, fontWeight: 700, color: NAVY }}>{b.totalRevenue?.toLocaleString()} RWF</td>
                   <td style={{ padding: "14px 16px", fontSize: 13, color: "#374151" }}>{b.totalSales}</td>

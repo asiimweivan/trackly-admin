@@ -20,6 +20,11 @@ export const adminApi = {
 
   getAgentStats: () => client.get("/agents/admin/stats"),
 
+  // -- Agent commission window (months of commission per business) --
+  getCommissionWindows: () => client.get("/admin/agents/commission-months"),
+  setCommissionWindow: (agentId: string, months: number) =>
+    client.patch(`/admin/agents/${agentId}/commission-months`, { months }),
+
   reviewAgent: (agentId: string, action: "approved" | "rejected" | "suspended", reason?: string) =>
     client.patch(`/agents/admin/${agentId}/review`, { action, reason }),
 

@@ -128,7 +128,7 @@ export default function Settings() {
               <label style={{ fontSize: 11, fontWeight: 700, color: "#374151", display: "block", marginBottom: 4 }}>AGENT COMMISSION (%)</label>
               <input type="number" step="0.1" value={e.commissionPercent ?? 0} onChange={ev => setField(p.key, "commissionPercent", ev.target.value)}
                 style={{ width: "100%", padding: "8px 12px", border: "1.5px solid #E5E7EB", borderRadius: 8, fontSize: 13, marginBottom: 18, outline: "none", boxSizing: "border-box" }} />
-              <p style={{ fontSize: 11, color: GRAY, margin: "-12px 0 16px" }}>Percentage of monthly price paid to the referring agent, capped at the client's first 6 months.</p>
+              <p style={{ fontSize: 11, color: GRAY, margin: "-12px 0 16px" }}>Percentage of the price paid to the referring agent every month. Default window is 6 months per client; extend it for a single agent on the Agents page.</p>
 
               <button onClick={() => savePlan(p.key, planLabel(p.key))} disabled={savingKey === p.key}
                 style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: 12, background: color, color: "#fff", border: "none", borderRadius: 10, fontWeight: 800, fontSize: 13, cursor: "pointer", opacity: savingKey === p.key ? 0.6 : 1 }}>
