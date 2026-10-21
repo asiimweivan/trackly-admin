@@ -28,3 +28,5 @@ package-lock.json
 apply-*.js
 check-corruption.js
 fix-support-notify-admin.js
+
+*.bak-*
