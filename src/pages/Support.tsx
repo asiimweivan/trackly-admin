@@ -109,7 +109,7 @@ export default function Support() {
           <h1 style={{ fontSize: 22, fontWeight: 900, color: NAVY, margin: 0, display: "flex", alignItems: "center", gap: 10 }}>
             <Headphones size={22} color={NAVY} /> Support
           </h1>
-          <p style={{ color: GRAY, margin: "4px 0 0", fontSize: 13 }}>Tickets submitted from the app, plus anything logged from contact.ivanexo@gmail.com</p>
+          <p style={{ color: GRAY, margin: "4px 0 0", fontSize: 13 }}>Tickets submitted from the app, plus anything logged from support@ivanexo.com</p>
         </div>
         <button onClick={() => setLogModal(true)} style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", border: `1.5px solid ${NAVY}`, color: NAVY, borderRadius: 10, padding: "10px 16px", fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
           <Mail size={14} /> Log Email Ticket
@@ -246,7 +246,7 @@ export default function Support() {
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }} onClick={() => setLogModal(false)}>
           <div style={{ background: "#fff", borderRadius: 16, padding: 28, width: 460 }} onClick={e => e.stopPropagation()}>
             <h2 style={{ margin: "0 0 4px", fontSize: 17, fontWeight: 900, color: NAVY }}>Log Email Ticket</h2>
-            <p style={{ margin: "0 0 18px", fontSize: 12, color: GRAY }}>For anything received at contact.ivanexo@gmail.com</p>
+            <p style={{ margin: "0 0 18px", fontSize: 12, color: GRAY }}>For anything received at support@ivanexo.com</p>
 
             <label style={{ fontSize: 11, fontWeight: 700, color: "#374151", display: "block", marginBottom: 4 }}>CONTACT NAME</label>
             <input value={manual.contactName} onChange={e => setManual({ ...manual, contactName: e.target.value })}
