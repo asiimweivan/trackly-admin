@@ -9,6 +9,10 @@ export const adminApi = {
   verifyBusiness: (businessId: string, verified: boolean) =>
     client.patch(`/admin/businesses/${businessId}/verify?verified=${verified}`),
   getUsers: () => client.get("/admin/users"),
+  getPayments: () => client.get("/admin/payments"),
+  getDeletedAccounts: () => client.get("/admin/deleted-accounts"),
+  recoverAccount: (userId: string) => client.post(`/admin/deleted-accounts/${userId}/recover`),
+  purgeAccount: (userId: string) => client.post(`/admin/deleted-accounts/${userId}/purge`),
   getSubscriptions: () => client.get("/admin/subscriptions"),
   getPlans: () => client.get("/subscriptions/plans"),
   updatePlan: (planKey: string, data: any) => client.put(`/subscriptions/plans/${planKey}`, data),
@@ -54,7 +58,7 @@ export const adminApi = {
   cancelSubscription: (businessId: string) =>
     client.delete(`/admin/subscriptions/${businessId}`),
 
-  sendNotification: (data: { title: string; body: string; targetType: string; targetValue: string }) =>
+  sendNotification: (data: { title: string; body: string; targetType: string; targetValue: string; channel?: string }) =>
     client.post("/admin/notifications/send", data),
 
   // -- Support tickets --

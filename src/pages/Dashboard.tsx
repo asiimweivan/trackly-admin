@@ -23,6 +23,7 @@ interface Stats {
   inkungaPlanCount: number;
   trialCount: number;
   expiredCount: number;
+  payingBusinesses: number;
 }
 
 function StatCard({ icon, label, value, sub, color }: any) {
@@ -97,7 +98,7 @@ export default function Dashboard() {
         <StatCard icon={<Store size={22} color={TEAL} />} label="TOTAL BUSINESSES" value={stats.totalBusinesses} sub={`+${stats.newBusinessesToday} today`} color={TEAL} />
         <StatCard icon={<CreditCard size={22} color={NAVY} />} label="ACTIVE SUBSCRIPTIONS" value={stats.activeSubscriptions} sub={`${eff.ubuntu} on free Ubuntu`} color={NAVY} />
         <StatCard icon={<Users size={22} color={GOLD} />} label="TOTAL USERS" value={stats.totalUsers} sub={`${stats.totalAgents} agents`} color={GOLD} />
-        <StatCard icon={<Wallet size={22} color={PURPLE} />} label="REVENUE THIS MONTH" value={`${stats.totalRevenueThisMonth.toLocaleString()} RWF`} sub={`Active plans: ${stats.totalRevenueAllTime.toLocaleString()} RWF / month`} color={PURPLE} />
+        <StatCard icon={<Wallet size={22} color={PURPLE} />} label="REVENUE THIS MONTH (PAID)" value={`${stats.totalRevenueThisMonth.toLocaleString()} RWF`} sub={`All time: ${stats.totalRevenueAllTime.toLocaleString()} RWF \u00b7 ${stats.payingBusinesses ?? 0} paying`} color={PURPLE} />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>

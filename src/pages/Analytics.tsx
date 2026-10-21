@@ -31,7 +31,7 @@ export default function Analytics() {
   ] : [];
 
   const churnRate = totalSubs > 0 && stats ? ((stats.expiredCount / totalSubs) * 100).toFixed(1) : "0.0";
-  const paidBusinesses = businesses.filter((b: any) => effectivePlan(b.planKey, b.subscriptionStatus) !== "ubuntu").length;
+  const paidBusinesses = stats?.payingBusinesses || 0;
   const conversionRate = businesses.length > 0 ? ((paidBusinesses / businesses.length) * 100).toFixed(1) : "0.0";
   const avgRevenuePerBusiness = businesses.length > 0 && stats
     ? Math.round((stats.totalRevenueAllTime || 0) / businesses.length)
@@ -48,9 +48,9 @@ export default function Analytics() {
     }));
 
   const cards = [
-    { label: "MRR", value: `${(stats?.totalRevenueAllTime || 0).toLocaleString()} RWF`, icon: <Wallet size={20} color={TEAL} />, color: TEAL },
-    { label: "ARR (projected)", value: `${((stats?.totalRevenueAllTime || 0) * 12).toLocaleString()} RWF`, icon: <Calendar size={20} color={NAVY} />, color: NAVY },
-    { label: "Avg MRR / Business", value: `${avgRevenuePerBusiness.toLocaleString()} RWF`, icon: <Store size={20} color={GOLD} />, color: GOLD },
+    { label: "Revenue this month", value: `${(stats?.totalRevenueThisMonth || 0).toLocaleString()} RWF`, icon: <Wallet size={20} color={TEAL} />, color: TEAL },
+    { label: "Revenue all time", value: `${(stats?.totalRevenueAllTime || 0).toLocaleString()} RWF`, icon: <Calendar size={20} color={NAVY} />, color: NAVY },
+    { label: "Avg revenue / business", value: `${avgRevenuePerBusiness.toLocaleString()} RWF`, icon: <Store size={20} color={GOLD} />, color: GOLD },
     { label: "Churn Rate", value: `${churnRate}%`, icon: <TrendingDown size={20} color={RED} />, color: RED },
     { label: "Free to Paid", value: `${conversionRate}%`, icon: <TrendingUp size={20} color={TEAL} />, color: "#059669" },
   ];
